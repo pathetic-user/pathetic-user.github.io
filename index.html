@@ -1,65 +1,246 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <link href='https://cdn.boxicons.com/fonts/brands/boxicons-brands.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+    <title>Sheikh Tawsif | CS Student</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Feather icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Anime.js for simple animation -->
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        html { scroll-behavior: smooth; }
+        /* Loading overlay */
+        #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #0f172a; display: flex; align-items: center; justify-content: center; z-index: 1000; transition: opacity 0.5s ease; }
+        #loading-overlay.hidden { opacity: 0; pointer-events: none; }
+        /* Typing cursor animation */
+        .typewriter { border-right: 2px solid #4ade80; animation: blink 0.75s step-end infinite; }
+        @keyframes blink { from, to { border-color: transparent } 50% { border-color: #4ade80 } }
+        /* Responsive grid adjustments */
+        @media (max-width: 640px) { .project-grid { grid-template-columns: 1fr; } }
+        @media (min-width: 641px) and (max-width: 1024px) { .project-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1025px) { .project-grid { grid-template-columns: repeat(3, 1fr); } }
+        /* --- Typed single-line effect --- */
+.typed-line{
+  display:inline-block;
+  white-space:nowrap;
+  overflow:hidden;
+  border-right:2px solid #4ade80; /* caret */
+  width:0;
+  /* type the whole line once, then keep caret blinking */
+  animation:
+    typing 3s steps(40, end) 0.3s forwards,
+    blink .75s step-end infinite;
+}
+@keyframes typing { to { width: 36ch; } } /* adjust ch if you change the text */
+@keyframes blink { 50% { border-color: transparent; } }
+
+    </style>
 </head>
+<body class="bg-gray-900 text-gray-100 font-inter antialiased">
+    <!-- Loading animation -->
+    <div id="loading-overlay">
+        <div class="loader border-4 border-gray-700 border-t-transparent rounded-full w-16 h-16 animate-spin"></div>
+    </div>
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-gray-900/90 backdrop-blur-sm z-50 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="index.html"><span class="text-xl font-semibold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">Sheikh&nbsp;Tawsif</span></a>
+                </div>
+                <!-- Desktop navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="projects.html" class="text-gray-300 hover:text-white transition">Projects</a>
+                    <a href="about.html" class="text-gray-300 hover:text-white transition">About</a>
+                    <a href="#skills" class="text-gray-300 hover:text-white transition">Skills</a>
+                    <!-- Connect dropdown -->
+                    <div class="relative group">
+                        <button class="text-gray-300 hover:text-white transition flex items-center">
+                            <i data-feather="user" class="w-4 h-4 mr-1"></i> Connect
+                            <i data-feather="chevron-down" class="w-4 h-4 ml-1"></i>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-md shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <!-- Replace '#' with your actual profile links -->
+                            <a href="https://github.com/pathetic-user" target="_blank" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white flex items-center"><i data-feather="github" class="w-4 h-4 mr-2"></i> GitHub</a>
+                            <a href="https://www.linkedin.com/in/sheikh-tawsif-bin-aftab-609248313/" target="_blank" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white flex items-center"><i data-feather="linkedin" class="w-4 h-4 mr-2"></i> LinkedIn</a>
+                            <a href="https://x.com/SheikhTiB" target="_blank" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white flex items-center"><i data-feather="twitter" class="w-4 h-4 mr-2"></i> Twitter</a>
+                            <a href="https://discord.gg/QncEyhtU" target="_blank" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white flex items-center"><i data-feather="message-circle" class="w-4 h-4 mr-2"></i> Discord</a>
+                            <a href="mailto:sheikhti1205@gmail.com" class="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 hover:text-white flex items-center"><i data-feather="mail" class="w-4 h-4 mr-2"></i> Email</a>
+                        </div>
+                    </div>
+                    <!-- Dark mode toggle -->
+                    <button id="mode-toggle" class="text-gray-300 hover:text-white transition flex items-center focus:outline-none"><i data-feather="sun" class="w-5 h-5"></i></button>
+                </div>
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-button" class="md:hidden text-gray-300 focus:outline-none"><i data-feather="menu"></i></button>
+            </div>
+        </div>
+        <!-- Mobile navigation menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-gray-900 border-t border-gray-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="projects.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Projects</a>
+                <a href="about.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">About</a>
+                <a href="#skills" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Skills</a>
+                <div class="border-t border-gray-800 mt-2 pt-2">
+                    <a href="https://github.com/pathetic-user" target="_blank" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">GitHub</a>
+                    <a href="https://www.linkedin.com/in/sheikh-tawsif-bin-aftab-609248313/" target="_blank" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">LinkedIn</a>
+                    <a href="https://x.com/SheikhTiB" target="_blank" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Twitter</a>
+                    <a href="https://discordapp.com/users/yourid" target="_blank" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Discord</a>
+                    <a href="mailto:sheikhti1205@gmail.com" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Email</a>
+                </div>
+                <button id="mobile-mode-toggle" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white flex items-center"><i data-feather="sun" class="w-5 h-5 mr-2"></i> Toggle Mode</button>
+            </div>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+<section class="min-h-screen flex items-center pt-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 hero-content">
+    <div class="grid md:grid-cols-2 gap-10 items-center">
+      <!-- Left: Text -->
+      <div class="text-center md:text-left">
+        <div class="mb-6">
+          <span class="inline-block px-3 py-1 rounded-full bg-green-900/20 text-green-400 text-sm font-medium">
+            Available for internships
+          </span>
+        </div>
 
-<body>
-  <nav class="navbar">
-  <a href="home/index.html" class="logo">Portfolio</a>
-  <ul>
-    <li class="active"><a href="index.html">Home</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="portfolio.html">Portfolio</a></li>
-    <li><a href="services.html">Service</a></li>
-    <li><a href="contact.html">Contact</a></li>
-  </ul>
-  </nav>
+        <h1 class="text-4xl md:text-6xl font-bold mb-6">
+          Hi, I'm <span class="bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">Sheikh Tawsif</span>
+        </h1>
 
+        <!-- Typed once, then caret blinks -->
+        <div class="text-2xl md:text-3xl font-medium mb-8">
+          <span class="typed-line">CS Student & C/C++ Developer (Beginner)</span>
+        </div>
 
-  <div class="bars-animation">
-    <div class="bar" style="--i:6"></div>
-    <div class="bar" style="--i:5"></div>
-    <div class="bar" style="--i:4"></div>
-    <div class="bar" style="--i:3"></div>
-    <div class="bar" style="--i:2"></div>
-    <div class="bar" style="--i:1"></div>
+        <p class="text-lg text-gray-400 max-w-2xl mb-10">
+          Beginner-level programmer passionate about building efficient systems and clean code.
+          Currently strengthening my skills in C/C++, HTML, and CSS, while exploring Python and R for data structuring.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+          <a href="#projects" class="px-6 py-3 rounded-md bg-gradient-to-r from-green-500 to-blue-600 text-white font-medium hover:opacity-90 transition flex items-center justify-center">
+            View Projects
+          </a>
+          <a href="https://github.com/pathetic-user" target="_blank" class="px-6 py-3 rounded-md border border-gray-700 text-gray-300 hover:bg-gray-800/50 hover:text-white transition flex items-center justify-center">
+            <i data-feather="github" class="w-5 h-5 mr-2"></i> GitHub
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Rounded DP placeholder -->
+      <div class="flex justify-center md:justify-end">
+        <div class="relative w-40 h-40 md:w-56 md:h-56 rounded-full overflow-hidden border border-gray-700 bg-gray-800/60 shadow-xl ring-1 ring-white/5">
+          <!-- 👇 Replace the src with your DP file and you're done.
+               If you don’t have an image yet, keep it as-is for a placeholder icon. -->
+          <img
+            src="sheikh.png"
+            alt="Profile photo"
+            class="w-full h-full object-cover"
+          />
+          <!-- Fallback placeholder (shows until you remove 'hidden' from the <img>) -->
+          <div class=" inset-0 grid place-items-center text-gray-500">
+            <i data-feather="user" class="w-12 h-12"></i>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <section class="home">
-    <div class="home-info">
-      <h1>Sheikh Tawsif Bin Aftab</h1>
-      <h2>I'm a
-        <span style="--i:4" data-text="Beginner-level Programmer">Beginner-level Programmer</span>
-        <span style="--i:3" data-text="Beginner-level Designer">Beginner-level Designer</span>
-        <span style="--i:2" data-text="Non-YouTuber">Non-YouTuber</span>
-        <span style="--i:1" data-text="Non-Blogger">Non-Blogger</span>
-      </h2>
-      <p>Currently exploring the world of programming through C, C++, HTML, CSS, and Python — with a growing passion for data structuring and analysis using Python and R.</p>
-      <br>
-      <div class="btn-sci">
-        <a href="#" class="btn">Download CV</a>
-        <div class="sci">
-          <a href="#"><i class='bxl  bx-github'  ></i></a>
-          <a href="#"><i class='bxl  bx-linkedin'  ></i> </a>
-          <a href="#"><i class='bxl  bx-twitter-x'  ></i> </a>
-          <a href="#"><i class='bxl  bx-youtube'  ></i> </a>
+    <!-- Projects Section (brief) -->
+    <section id="projects-section" class="py-20 bg-gray-800/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">My Projects</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">A selection of my recent work showcasing my programming journey. Replace each placeholder with your project details.</p>
+            </div>
+            <div class="project-grid grid gap-8">
+                <!-- Project Card 1 -->
+                <div class="project-card bg-gray-800 rounded-xl overflow-hidden border border-gray-700 transition-all duration-300 hover:brightness-110">
+                    <div class="h-48 bg-gray-700 flex items-center justify-center"><i data-feather="code" class="w-16 h-16 text-gray-500"></i></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2"><!-- Project Name here --> Project Name</h3>
+                        <p class="text-gray-400 mb-4"><!-- Description here --> Brief description of the project goes here.</p>
+                        <div class="flex flex-wrap gap-2 mb-4"><span class="px-2 py-1 text-xs rounded-full bg-green-900/30 text-green-400">Language 1</span><span class="px-2 py-1 text-xs rounded-full bg-blue-900/30 text-blue-400">Language 2</span></div>
+                        <div class="flex space-x-3"><a href="#" class="text-sm text-blue-400 hover:text-blue-300 flex items-center"><i data-feather="github" class="w-4 h-4 mr-1"></i> Code</a></div>
+                    </div>
+                </div>
+                <!-- Project Card 2 -->
+                <div class="project-card bg-gray-800 rounded-xl overflow-hidden border border-gray-700 transition-all duration-300 hover:brightness-110">
+                    <div class="h-48 bg-gray-700 flex items-center justify-center"><i data-feather="layers" class="w-16 h-16 text-gray-500"></i></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2"><!-- Project Name here --> Project Name</h3>
+                        <p class="text-gray-400 mb-4"><!-- Description here --> Brief description of the project goes here.</p>
+                        <div class="flex flex-wrap gap-2 mb-4"><span class="px-2 py-1 text-xs rounded-full bg-purple-900/30 text-purple-400">Language 1</span><span class="px-2 py-1 text-xs rounded-full bg-yellow-900/30 text-yellow-400">Language 2</span></div>
+                        <div class="flex space-x-3"><a href="#" class="text-sm text-blue-400 hover:text-blue-300 flex items-center"><i data-feather="github" class="w-4 h-4 mr-1"></i> Code</a></div>
+                    </div>
+                </div>
+                <!-- Project Card 3 -->
+                <div class="project-card bg-gray-800 rounded-xl overflow-hidden border border-gray-700 transition-all duration-300 hover:brightness-110">
+                    <div class="h-48 bg-gray-700 flex items-center justify-center"><i data-feather="database" class="w-16 h-16 text-gray-500"></i></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2"><!-- Project Name here --> Project Name</h3>
+                        <p class="text-gray-400 mb-4"><!-- Description here --> Brief description of the project goes here.</p>
+                        <div class="flex flex-wrap gap-2 mb-4"><span class="px-2 py-1 text-xs rounded-full bg-blue-900/30 text-blue-400">Language 1</span><span class="px-2 py-1 text-xs rounded-full bg-green-900/30 text-green-400">Language 2</span></div>
+                        <div class="flex space-x-3"><a href="#" class="text-sm text-blue-400 hover:text-blue-300 flex items-center"><i data-feather="github" class="w-4 h-4 mr-1"></i> Code</a></div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-
-    <div class="home-img">
-      <div class="img-box">
-        <div class="img-item">
-          <img src="sheikh.png" alt="Profile Picture">
+    </section>
+    <!-- Skills Section -->
+    <section id="skills" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4">Skills &amp; Technologies</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Tools and languages I work with.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center mb-4"><i data-feather="code" class="w-6 h-6 text-green-500 mr-2"></i><h3 class="text-xl font-semibold">Languages</h3></div>
+                    <div class="flex flex-wrap gap-2"><span class="px-3 py-1 rounded-full bg-green-900/30 text-green-400">C</span><span class="px-3 py-1 rounded-full bg-green-900/30 text-green-400">C++</span><span class="px-3 py-1 rounded-full bg-blue-900/30 text-blue-400">HTML</span><span class="px-3 py-1 rounded-full bg-purple-900/30 text-purple-400">CSS</span></div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center mb-4"><i data-feather="book" class="w-6 h-6 text-blue-500 mr-2"></i><h3 class="text-xl font-semibold">Currently Learning</h3></div>
+                    <div class="flex flex-wrap gap-2"><span class="px-3 py-1 rounded-full bg-yellow-900/30 text-yellow-400">Python</span><span class="px-3 py-1 rounded-full bg-red-900/30 text-red-400">R</span><span class="px-3 py-1 rounded-full bg-gray-700 text-gray-300">Data Structuring</span></div>
+                </div>
+                <div class="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+                    <div class="flex items-center mb-4"><i data-feather="target" class="w-6 h-6 text-purple-500 mr-2"></i><h3 class="text-xl font-semibold">Next Target</h3></div>
+                    <div class="flex flex-wrap gap-2"><span class="px-3 py-1 rounded-full bg-orange-900/30 text-orange-400">Java</span></div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </section>
+    </section>
+    <!-- Footer -->
+    <footer class="py-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"><p class="text-gray-500">© 2025 Sheikh Tawsif bin Aftab. All rights reserved.</p></div>
+    </footer>
+    <script>
+        feather.replace();
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); });
+            const htmlEl = document.documentElement;
+            const modeToggle = document.getElementById('mode-toggle');
+            const mobileModeToggle = document.getElementById('mobile-mode-toggle');
+            function toggleMode() {
+                htmlEl.classList.toggle('dark');
+                const icon = modeToggle.querySelector('i');
+                const mIcon = mobileModeToggle.querySelector('i');
+                if (htmlEl.classList.contains('dark')) { icon.dataset.feather = 'sun'; mIcon.dataset.feather = 'sun'; } else { icon.dataset.feather = 'moon'; mIcon.dataset.feather = 'moon'; }
+                feather.replace();
+            }
+            modeToggle.addEventListener('click', toggleMode);
+            mobileModeToggle.addEventListener('click', () => { toggleMode(); mobileMenu.classList.add('hidden'); });
+            window.addEventListener('load', () => { document.getElementById('loading-overlay').classList.add('hidden'); });
+        });
+    </script>
 </body>
 </html>
