@@ -38,6 +38,16 @@
       border-right:2px solid #4ade80; width:0;
       animation: typing 3s steps(35,end) .3s forwards, blink .75s step-end infinite;
     }
+    /* Mobile: let the subtitle wrap instead of stretching the page */
+    @media (max-width: 640px) {
+      .typed-line{
+        white-space: normal;     /* allow wrapping */
+        overflow: visible;       /* no clipping */
+        border-right: 0;         /* hide caret on mobile */
+        width: auto;             /* no fixed width */
+        animation: none;         /* show full text immediately */
+      }
+    }
     @keyframes typing { to { width: 35ch; } } /* adjust if you change the text */
     @keyframes blink { 50% { border-color: transparent; } }
 
@@ -157,7 +167,7 @@
             <!-- Replace src with your own DP (sheikh.png is your placeholder) -->
             <img id="dp-img" src="sheikh.png" alt="Profile photo" class="w-full h-full object-cover"/>
             <!-- Fallback placeholder -->
-            <div id="dp-fallback" class="absolute inset-0 grid place-items-center text-gray-500">
+            <div id="dp-fallback" class="relative inset-0 grid place-items-center text-gray-500">
               <i data-feather="user" class="w-12 h-12"></i>
             </div>
           </div>
